@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Add / Edit Form</title>
+</head>
+<body>
+
+<form th:method="post" th:action="@{${book == null} ? '/books/add' : '/books/edit/' + ${book.bookId}}">
+  <div>
+    <label for="title">Book Title</label>
+    <input type="text"
+           id="title"
+           name="title"
+           th:value="${book?.title}"
+           required>
+  </div>
+  <div>
+    <label for="author">Book Author</label>
+    <input type="text"
+           id="author"
+           name="author"
+           th:value="${book?.author}"
+           required>
+  </div>
+  <div>
+    <label for="description">Book Description</label>
+    <input type="text"
+           id="description"
+           name="description"
+           th:value="${book?.description}"
+           required>
+  </div>
+  <div>
+    <label>Category</label><br/>
+    <select id="categories" name="categories" multiple="multiple" size="5">
+      <option
+              th:each="cat : ${categories}"
+              th:value="${cat.categoryId}"
+              th:text="${cat.name}"
+              th:selected="${book?.categories?.contains(cat)}"
+      > [cat.name]</option>
+    </select>
+  </div>
+
+  <button id="submit" type="submit">Submit</button>
+  <a id="back" href="/" type="button" class="btn btn-primary">Back to main page</a>
+</form>
+
+</body>
+</html>

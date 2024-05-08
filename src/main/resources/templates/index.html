@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>BookShop Homepage</title>
+</head>
+<body>
+<ul>
+    <li th:each="book : ${books}">
+        <p>Title: <span th:text="${book.title}"></span></p>
+        <p>Description: <span th:text="${book.description}"></span></p>
+        <p>Author: <span th:text="${book.author}"></span></p>
+        <p>Categories:</p>
+        <ul>
+            <li th:each="category : ${book.categories}">
+                <span th:text="${category.name}"></span>
+            </li>
+        </ul>
+
+        <!-- Delete Button -->
+        <form th:action="@{'/books/delete/{id}' (id=${book.bookId})}" method="post" style="display: inline;">
+            <input type="hidden" name="bookId" th:value="${book.bookId}" />
+            <button type="submit" class="delete-item">Delete</button>
+        </form>
+
+        <!-- Edit Button -->
+        <a th:href="@{'/books/edit/{id}' (id=${book.bookId})}" class="edit-item">Edit</a>
+
+    </li>
+</ul>
+
+<!-- Add New Book Button -->
+<a th:href="@{/books/add}" class="add-new-book">Add New Book</a>
+
+
+</body>
+</html>
