@@ -90,4 +90,12 @@ public class BookController {
     }
 
 
+    @GetMapping("/books/{id}")
+    public String bookPage(@PathVariable Long id, Model model){
+        Book book = bookService.findById(id);
+        model.addAttribute("book", book);
+
+        return "book-page";
+    }
+
 }
