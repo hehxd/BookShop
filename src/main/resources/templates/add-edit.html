@@ -41,6 +41,25 @@
       > [cat.name]</option>
     </select>
   </div>
+  <div>
+    <label for="price">Book Price</label>
+    <input type="text"
+           id="price"
+           name="price"
+           th:value="${book?.price}"
+           required>
+  </div>
+  <div>
+    <label>City</label><br/>
+    <select id="cities" name="cities" multiple="multiple" size="5">
+      <option
+              th:each="c : ${cities}"
+              th:value="${c.locationId}"
+              th:text="${c.name}"
+              th:selected="${book?.bookCities?.contains(c)}"
+      > [city.name]</option>
+    </select>
+  </div>
 
   <button id="submit" type="submit">Submit</button>
   <a id="back" href="/" type="button" class="btn btn-primary">Back to main page</a>

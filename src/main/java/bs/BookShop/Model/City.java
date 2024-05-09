@@ -7,19 +7,18 @@ import lombok.NoArgsConstructor;
 @Data
 @Entity
 @NoArgsConstructor
-public class Category {
+public class City {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "category_id")
-    private Long categoryId;
+    @Column(name = "city_id")
+    private Long locationId;
 
     @Basic
-    @Column(name = "category_name")
+    @Column(name = "city_name")
     private String name;
 
-    public Category(String name) {
+    public City(String name) {
         this.name = name;
     }
-
 }

@@ -5,15 +5,46 @@
     <title>BookShop Homepage</title>
 </head>
 <body>
+
+<form id="filter-form">
+<h3>Search books</h3>
+<label th:method="POST" th:action="@{'/books'}">
+        <label for="f2">Category</label>
+        <select id="f2" name="categoryId">
+            <option value="">All</option>
+            <!-- For each course you should have one <option> like below  -->
+            <option th:each="c:${categories}"
+                    th:value="${c.getCategoryId()}"
+                    th:text="${c.getName()}"> [category]</option>
+        </select>
+        <span>Price: <input type="text" id="price" name="price"></span>
+    <label for="f3">City</label>
+    <select id="f3" name="cityId">
+        <option value="">All</option>
+        <!-- For each course you should have one <option> like below  -->
+        <option th:each="city:${cities}"
+                th:value="${city.getLocationId()}"
+                th:text="${city.getName()}"> [city]</option>
+    </select>
+        <input type="submit" value="Submit">
+</label>
+</form>
 <ul>
     <li th:each="book : ${books}">
         <p>Title: <span th:text="${book.title}"></span></p>
         <p>Description: <span th:text="${book.description}"></span></p>
         <p>Author: <span th:text="${book.author}"></span></p>
-        <p>Categories:</p>
+        <p>Category: </p>
         <ul>
             <li th:each="category : ${book.categories}">
                 <span th:text="${category.name}"></span>
+            </li>
+        </ul>
+        <p>Price: <span th:text="${book.price}"></span></p>
+        <p>Available in stores in: </p>
+        <ul>
+            <li th:each="city : ${book.bookCities}">
+                <span th:text="${city.name}"></span>
             </li>
         </ul>
 

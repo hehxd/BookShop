@@ -28,6 +28,10 @@ public class Book {
     @Column(name = "book_description")
     private String description;
 
+    @Basic
+    @Column(name = "book_price")
+    private Integer price;
+
     @ManyToMany
     @JoinTable(
             name = "book_categories",
@@ -36,6 +40,14 @@ public class Book {
     )
     private List<Category> categories;
 
+    @ManyToMany
+    @JoinTable(
+            name = "book_cities",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "city_id")
+    )
+    private List<City>bookCities;
+
     public Book(String title, String author, String description, List<Category> categories) {
         this.title = title;
         this.author = author;
@@ -43,4 +55,13 @@ public class Book {
         this.categories = categories;
     }
 
+    public Book(String title, String author, String description, Integer price, List<Category> categories,
+                List<City> bookCities) {
+        this.title = title;
+        this.author = author;
+        this.description = description;
+        this.price = price;
+        this.categories = categories;
+        this.bookCities = bookCities;
+    }
 }
