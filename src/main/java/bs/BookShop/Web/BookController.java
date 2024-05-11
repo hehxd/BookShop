@@ -1,9 +1,11 @@
 package bs.BookShop.Web;
 
 import bs.BookShop.Model.Book;
+import bs.BookShop.Model.ShoppingCart;
 import bs.BookShop.Service.BookService;
 import bs.BookShop.Service.CategoryService;
 import bs.BookShop.Service.CityService;
+import bs.BookShop.Service.ShoppingCartService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,10 +22,13 @@ public class BookController {
     private final CategoryService categoryService;
     private final CityService cityService;
 
-    public BookController(BookService bookService, CategoryService categoryService, CityService cityService) {
+    private final ShoppingCartService shoppingCartService;
+
+    public BookController(BookService bookService, CategoryService categoryService, CityService cityService, ShoppingCartService shoppingCartService) {
         this.bookService = bookService;
         this.categoryService = categoryService;
         this.cityService = cityService;
+        this.shoppingCartService = shoppingCartService;
     }
 
     @GetMapping({"/","/books"})
@@ -97,5 +102,43 @@ public class BookController {
 
         return "book-page";
     }
+
+    @GetMapping("/books/cart/add/{id}")
+    public String addToCart(@PathVariable Long id) {
+        Book book = bookService.findById(id);
+        shoppingCartService.addToCart(book);
+        return "redirect:/";
+    }
+
+    @GetMapping("/books/cart/remove/{id}")
+    public String removeFromCart(@PathVariable Long id) {
+        Book book = bookService.findById(id);
+        shoppingCartService.removeFromCart(book);
+        return "redirect:/";
+    }
+
+
+    @GetMapping("/books/cart")
+    public String viewCart(Model model) {
+        ShoppingCart cart = shoppingCartService.getShoppingCart();
+        model.addAttribute("cart", cart);
+        return "cart-view";
+    }
+
+    @PostMapping("/books/cart/add/{id}")
+    public String addToCartPost(@PathVariable Long id) {
+        Book book = bookService.findById(id);
+        shoppingCartService.addToCart(book);
+        return "redirect:/";
+    }
+
+    @PostMapping("/books/cart/remove/{id}")
+    public String removeFromCartPost(@PathVariable Long id) {
+        Book book = bookService.findById(id);
+        shoppingCartService.removeFromCart(book);
+        return "redirect:/";
+    }
+
+
 
 }

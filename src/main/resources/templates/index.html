@@ -61,6 +61,11 @@
                     </form>
                     <!-- Edit Button -->
                     <a th:href="@{'/books/edit/{id}' (id=${book.bookId})}" class="btn btn-primary">Edit</a>
+
+                    <!-- Add to Cart Button -->
+                    <form th:action="@{'/books/cart/add/' + ${book.bookId}}" method="post">
+                        <button type="submit" class="btn btn-primary">Add to Cart</button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -70,6 +75,8 @@
 <!-- Add New Book Button -->
 <a th:href="@{/books/add}" class="btn btn-primary">Add New Book</a>
 
+<!-- View Cart Button -->
+<a th:href="@{/books/cart}" class="btn btn-primary">View Cart</a>
 
 </body>
 </html>

@@ -38,16 +38,16 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Book create(String title, String author, String description, Integer price,
-                       List<Long> categories, List<Long>cities) {
+                       List<Long> categories, List<Long> cities) {
         List<Category> categoryList = this.categoryRepository.findAllById(categories);
         List<City> cityList = this.cityRepository.findAllById(cities);
-        Book book = new Book(title,author,description, price, categoryList, cityList);
+        Book book = new Book(title, author, description, price, categoryList, cityList);
         return this.bookRepository.save(book);
     }
 
     @Override
     public Book update(Long id, String title, String author, String description,
-                       Integer price, List<Long> categories, List<Long>cities) {
+                       Integer price, List<Long> categories, List<Long> cities) {
         Book book = this.bookRepository.findByBookId(id);
         List<Category> categoryList = this.categoryRepository.findAllById(categories);
         List<City> cityList = this.cityRepository.findAllById(cities);
@@ -69,19 +69,6 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<Book> searchBooks(Long categoryId, Integer price, Long cityId) {
-       /* if (categoryId != null){
-            Category category = this.categoryRepository.findByCategoryId(categoryId);
-            return bookRepository.findByCategories(category);
-        }
-        else if (price != null){
-            return bookRepository.findBookByPriceEquals(price);
-        }
-        else if (cityId != null){
-            City city = this.cityRepository.findById(cityId).orElseThrow(InvalidCityIdException::new);
-            return bookRepository.findBookByBookCitiesContains(city);
-        }
-        return bookRepository.findAll(); */
-
         if (categoryId != null && price != null && cityId != null) {
             Category category = this.categoryRepository.findByCategoryId(categoryId);
             City city = this.cityRepository.findById(cityId).orElseThrow(InvalidCityIdException::new);
