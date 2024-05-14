@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Ordered Ticket - Confirmation</title>
+    <style type="text/css">
+        body {
+            width: 800px;
+            margin: auto;
+            background-color: azure;
+        }
+        table {
+            width:100%;
+        }
+        table, td, th {
+            border: 1px solid black;
+            padding: 3px 2px;
+        }
+    </style>
+</head>
+<body>
+<section>
+    <header>
+        <h1>Book Order page - Order confirmation </h1>
+    </header>
+    <table>
+        <tr>
+            <th colspan="2">
+                Your Order Status
+            </th>
+        </tr>
+        <tr>
+            <td><b>Name</b></td>
+            <td> [user.getFirstName()] </td>
+        </tr>
+        <tr>
+            <td><b>Surname</b></td>
+            <td>[user.getLastName()]</td>
+        </tr>
+        <tr>
+            <td><b>Book Title </b></td>
+            <td><th:block th:text="${book.getTitle()}"></th:block></td>
+        </tr>
+        <tr>
+            <td><b>Address</b></td>
+            <td>[user.getAddress]</td>
+        </tr>
+        <tr>
+            <td><b>How many books </b></td>
+            <td> </td>
+        </tr>
+    </table>
+    <a th:href="@{/books}">
+        <i>Go Back</i>
+    </a>
+    <form th:action="@{'/books/order/confirmation/' + ${book.bookId}}" method="post">
+        <button type="submit" class="btn btn-primary">Confirm</button>
+    </form>
+</section>
+</body>
+</html>

@@ -14,8 +14,7 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     List<Book>findBookByPriceEquals(Integer price);
     List<Book>findByCategories(Category category);
     List<Book>findBookByBookCitiesContains(City city);
-    List<Book> findByCategoriesAndPriceEqualsAndBookCitiesContains(Category category, Integer price, City city);
- //   List<Book>findByCategoriesAndPriceEqualsAndBookCities()
+    List<Book>findByCategoriesAndPriceEqualsAndBookCitiesContains(Category category, Integer price, City city);
     List<Book>findByCategoriesAndPriceEquals(Category category, Integer price);
     List<Book>findByCategoriesAndBookCitiesContains(Category category, City city);
     List<Book>findByPriceEqualsAndBookCitiesContains(Integer price, City city);

@@ -1,11 +1,12 @@
 package bs.BookShop.Web;
 
 import bs.BookShop.Model.Book;
+import bs.BookShop.Model.BookOrder;
 import bs.BookShop.Model.ShoppingCart;
-import bs.BookShop.Service.BookService;
-import bs.BookShop.Service.CategoryService;
-import bs.BookShop.Service.CityService;
-import bs.BookShop.Service.ShoppingCartService;
+import bs.BookShop.Model.User;
+import bs.BookShop.Service.*;
+import jakarta.servlet.http.HttpServletRequest;
+import org.hibernate.query.Order;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,13 +22,15 @@ public class BookController {
     private final BookService bookService;
     private final CategoryService categoryService;
     private final CityService cityService;
+    private final OrderService orderService;
 
     private final ShoppingCartService shoppingCartService;
 
-    public BookController(BookService bookService, CategoryService categoryService, CityService cityService, ShoppingCartService shoppingCartService) {
+    public BookController(BookService bookService, CategoryService categoryService, CityService cityService, OrderService orderService, ShoppingCartService shoppingCartService) {
         this.bookService = bookService;
         this.categoryService = categoryService;
         this.cityService = cityService;
+        this.orderService = orderService;
         this.shoppingCartService = shoppingCartService;
     }
 
@@ -138,7 +141,31 @@ public class BookController {
         shoppingCartService.removeFromCart(book);
         return "redirect:/";
     }
+    @PostMapping("/books/order/{id}")
+    public String submitOrder(@PathVariable Long id, Model model){
+        Book book = bookService.findById(id);
+        model.addAttribute("book", book);
 
+        return "orderConfirmation";
+    }
+    @PostMapping("/books/order/confirmation/{id}")
+    public String confirmOrder(@PathVariable Long id, Model model){
+        Book book = bookService.findById(id);
+        BookOrder bookOrder = new BookOrder(book.getTitle());
+        orderService.submitOrder(bookOrder);
+        return "redirect:/";
+    }
 
-
+    @GetMapping("/books/orders")
+    public String viewOrders(Model model) {
+        List<BookOrder> bookOrders = orderService.listAll();
+        model.addAttribute("orders", bookOrders);
+        return "orderView";
+    }
+/*
+    @PostMapping("/orders/{id}/updateStatus")
+    public String updateOrderStatus(@PathVariable Long id, @RequestParam OrderStatus status) {
+        orderService.updateOrderStatus(id, status);
+        return "redirect:/orders/{id}";
+    }*/
 }

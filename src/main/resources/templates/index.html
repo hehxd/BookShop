@@ -15,7 +15,6 @@
         <label for="f2">Category</label>
         <select id="f2" name="categoryId">
             <option value="">All</option>
-            <!-- For each course you should have one <option> like below  -->
             <option th:each="c:${categories}"
                     th:value="${c.getCategoryId()}"
                     th:text="${c.getName()}"> [category]</option>
@@ -24,7 +23,6 @@
     <label for="f3">City</label>
     <select id="f3" name="cityId">
         <option value="">All</option>
-        <!-- For each course you should have one <option> like below  -->
         <option th:each="city:${cities}"
                 th:value="${city.getLocationId()}"
                 th:text="${city.getName()}"> [city]</option>
@@ -35,13 +33,12 @@
 
 <div class="container mt-4">
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-        <!-- Displaying books as cards -->
         <div th:each="book : ${books}" class="col">
 
             <div class="card">
                 <div class="card-body">
                     <a th:href="@{'/books/' + ${book.bookId}}" style="text-decoration: none;">
-                        <h5 class="card-title" th:text="${book.title}"></h5>
+                        <h5 class="card-title" th:text="${book.title}" ></h5>
                     </a>
                     <p class="card-text" th:text="${book.description}"></p>
                     <p class="card-text fs-5 fw-bold">Author: <span class="fw-normal" th:text="${book.author}"></span></p>
@@ -54,18 +51,23 @@
                     <ul>
                         <li th:each="city : ${book.bookCities}" th:text="${city.name}"></li>
                     </ul>
-                    <!-- Delete Button -->
+
                     <form th:action="@{'/books/delete/{id}' (id=${book.bookId})}" method="post" style="display: inline;">
                         <input type="hidden" name="bookId" th:value="${book.bookId}" />
                         <button type="submit" class="btn btn-danger">Delete</button>
                     </form>
-                    <!-- Edit Button -->
+
                     <a th:href="@{'/books/edit/{id}' (id=${book.bookId})}" class="btn btn-primary">Edit</a>
 
-                    <!-- Add to Cart Button -->
+
                     <form th:action="@{'/books/cart/add/' + ${book.bookId}}" method="post">
                         <button type="submit" class="btn btn-primary">Add to Cart</button>
                     </form>
+
+                    <form th:action="@{'/books/order/' + ${book.bookId}}" method="post">
+                        <button type="submit" class="btn btn-primary">Order Book</button>
+                    </form>
+
                 </div>
             </div>
         </div>
@@ -77,6 +79,8 @@
 
 <!-- View Cart Button -->
 <a th:href="@{/books/cart}" class="btn btn-primary">View Cart</a>
+
+<a th:href="@{/books/orders}" class="btn btn-primary">View Orders</a>
 
 </body>
 </html>
