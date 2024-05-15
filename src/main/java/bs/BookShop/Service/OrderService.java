@@ -10,4 +10,5 @@ public interface OrderService {
     BookOrder submitOrder(BookOrder order);
     BookOrder findById(Long id);
     List<BookOrder> listAll();
+    BookOrder updateOrderStatus(Long orderId, OrderStatus status);
 }

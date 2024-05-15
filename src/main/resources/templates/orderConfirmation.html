@@ -51,7 +51,7 @@
         </tr>
     </table>
     <a th:href="@{/books}">
-        <i>Go Back</i>
+        <i>Cancel</i>
     </a>
     <form th:action="@{'/books/order/confirmation/' + ${book.bookId}}" method="post">
         <button type="submit" class="btn btn-primary">Confirm</button>

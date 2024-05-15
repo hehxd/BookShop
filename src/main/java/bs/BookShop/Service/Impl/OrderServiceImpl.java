@@ -34,5 +34,15 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.findAll();
     }
 
+    @Override
+    public BookOrder updateOrderStatus(Long orderId, OrderStatus status) {
+        BookOrder order = orderRepository.findById(orderId).orElse(null);
+        if (order != null) {
+            order.setStatus(status);
+            return orderRepository.save(order);
+        }
+        return null;
+    }
+
 
 }

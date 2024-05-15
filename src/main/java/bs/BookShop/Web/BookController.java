@@ -1,9 +1,6 @@
 package bs.BookShop.Web;
 
-import bs.BookShop.Model.Book;
-import bs.BookShop.Model.BookOrder;
-import bs.BookShop.Model.ShoppingCart;
-import bs.BookShop.Model.User;
+import bs.BookShop.Model.*;
 import bs.BookShop.Service.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.hibernate.query.Order;
@@ -162,10 +159,10 @@ public class BookController {
         model.addAttribute("orders", bookOrders);
         return "orderView";
     }
-/*
-    @PostMapping("/orders/{id}/updateStatus")
+
+    @PostMapping("books/orders/{id}/updateStatus")
     public String updateOrderStatus(@PathVariable Long id, @RequestParam OrderStatus status) {
         orderService.updateOrderStatus(id, status);
-        return "redirect:/orders/{id}";
-    }*/
+        return "redirect:/books/orders";
+    }
 }

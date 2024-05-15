@@ -23,15 +23,28 @@
         <td >[order.user.getAddress]</td>
         <td th:text="${order.status}">Status</td>
         <td>
-            <form th:action="@{'/orders/' + ${order.id} + '/updateStatus'}" method="post">
+            <form th:action="@{'/books/orders/' + ${order.id} + '/updateStatus'}" method="post">
                 <select name="status">
+                    <!-- Тековно селектираната опција како disabled и selected -->
+                    <option value="" disabled="disabled" selected="selected">Choose</option>
+                    <!-- Прикажи ги сите други опции освен селектираната -->
+                    <option value="PROCESSING" th:if="${order.status} != 'PROCESSING'">Processing</option>
+                    <option value="SHIPPED" th:if="${order.status} != 'SHIPPED'">Shipped</option>
+                    <option value="DELIVERED" th:if="${order.status} != 'DELIVERED'">Delivered</option>
+                    <option value="CANCELLED" th:if="${order.status} != 'CANCELLED'">Cancelled</option>
+                </select>
+                <button type="submit">Update Status</button>
+            </form>
+            <!--<form th:action="@{'/books/orders/' + ${order.id} + '/updateStatus'}" method="post">
+                <select name="status">
+                    <option th:text="${order.status}"></option>
                     <option value="PROCESSING">Processing</option>
                     <option value="SHIPPED">Shipped</option>
                     <option value="DELIVERED">Delivered</option>
                     <option value="CANCELLED">Cancelled</option>
                 </select>
                 <button type="submit">Update Status</button>
-            </form>
+            </form> -->
         </td>
     </tr>
     </tbody>
