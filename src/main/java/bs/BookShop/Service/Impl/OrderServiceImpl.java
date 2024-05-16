@@ -1,11 +1,11 @@
 package bs.BookShop.Service.Impl;
 
-import bs.BookShop.Model.BookOrder;
-import bs.BookShop.Model.OrderStatus;
+import bs.BookShop.Model.*;
 import bs.BookShop.Repository.OrderRepository;
 import bs.BookShop.Service.OrderService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -17,11 +17,23 @@ public class OrderServiceImpl implements OrderService {
         this.orderRepository = orderRepository;
     }
 
-
     @Override
-    public BookOrder submitOrder(BookOrder order){
-        orderRepository.save(order);
-        return order;
+    public BookOrder placeOrder(ShoppingCart shoppingCart) {
+        BookOrder order = new BookOrder();
+        order.setShoppingCart(shoppingCart);
+        order.setTotalPrice(shoppingCart.getTotalPrice());
+
+        List<OrderItem> orderItems = new ArrayList<>();
+        for (CartItem cartItem : shoppingCart.getCartItems()) {
+            OrderItem orderItem = new OrderItem();
+            orderItem.setBook(cartItem.getBook());
+            orderItem.setQuantity(cartItem.getQuantity());
+            orderItem.setBookOrder(order);
+            orderItems.add(orderItem);
+        }
+        order.setOrderItems(orderItems);
+
+        return orderRepository.save(order);
     }
 
     @Override
@@ -35,14 +47,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public BookOrder updateOrderStatus(Long orderId, OrderStatus status) {
+    public void updateOrderStatus(Long orderId, OrderStatus status) {
         BookOrder order = orderRepository.findById(orderId).orElse(null);
         if (order != null) {
             order.setStatus(status);
-            return orderRepository.save(order);
+            orderRepository.save(order);
         }
-        return null;
     }
-
 
 }

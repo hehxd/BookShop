@@ -3,7 +3,6 @@ package bs.BookShop.Service.Impl;
 import bs.BookShop.Model.Book;
 import bs.BookShop.Model.CartItem;
 import bs.BookShop.Model.ShoppingCart;
-import bs.BookShop.Repository.CartItemRepository;
 import bs.BookShop.Repository.ShoppingCartRepository;
 import bs.BookShop.Service.ShoppingCartService;
 import org.springframework.stereotype.Service;
@@ -12,11 +11,9 @@ import org.springframework.stereotype.Service;
 public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     private final ShoppingCartRepository shoppingCartRepository;
-    private final CartItemRepository cartItemRepository;
 
-    public ShoppingCartServiceImpl(ShoppingCartRepository shoppingCartRepository, CartItemRepository cartItemRepository) {
+    public ShoppingCartServiceImpl(ShoppingCartRepository shoppingCartRepository) {
         this.shoppingCartRepository = shoppingCartRepository;
-        this.cartItemRepository = cartItemRepository;
     }
 
     @Override
@@ -34,7 +31,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
             shoppingCart.getCartItems().add(newCartItem);
         }
 
-        // Update total price
         shoppingCart.setTotalPrice(calculateTotalPrice(shoppingCart));
         shoppingCartRepository.save(shoppingCart);
     }
@@ -46,7 +42,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
         if (cartItem != null) {
             shoppingCart.getCartItems().remove(cartItem);
-            // Update total price
             shoppingCart.setTotalPrice(calculateTotalPrice(shoppingCart));
             shoppingCartRepository.save(shoppingCart);
         }
@@ -55,6 +50,16 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public ShoppingCart getShoppingCart() {
         return getOrCreateShoppingCart();
+    }
+
+    @Override
+    public void clearCart() {
+        ShoppingCart shoppingCart = getShoppingCart();
+        if (shoppingCart != null) {
+            shoppingCart.getCartItems().clear();
+            shoppingCart.setTotalPrice(0.0);
+            shoppingCartRepository.save(shoppingCart);
+        }
     }
 
     private ShoppingCart getOrCreateShoppingCart() {

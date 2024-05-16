@@ -67,20 +67,15 @@
                         <button type="submit" class="btn btn-primary">Add to Cart</button>
                 </form>
 
-                    <form th:action="@{'/books/order/' + ${book.bookId}}" method="post">
-                        <button type="submit" class="btn btn-primary">Order now</button>
-                    </form>
-
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Add New Book Button -->
+
 <a th:href="@{/books/add}" class="btn btn-primary">Add New Book</a>
 
-<!-- View Cart Button -->
 <a th:href="@{/books/cart}" class="btn btn-primary">View Cart</a>
 
 <a th:href="@{/books/orders}" class="btn btn-primary">View Orders</a>

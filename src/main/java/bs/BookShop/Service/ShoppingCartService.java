@@ -9,5 +9,6 @@ public interface ShoppingCartService {
     void addToCart(Book book, Integer bookQuantity);
     void removeFromCart(Book book);
     ShoppingCart getShoppingCart();
+    void clearCart();
 
 }

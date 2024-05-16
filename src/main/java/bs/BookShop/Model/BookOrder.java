@@ -12,21 +12,31 @@ public class BookOrder {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String bookTitle;
-
     @Enumerated(value = EnumType.STRING)
     private OrderStatus status = OrderStatus.PROCESSING;
 
     @ManyToOne
     private User user;
 
-    private String numOfBooks;
+    @OneToMany(mappedBy = "bookOrder", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderItem> orderItems;
 
-    public BookOrder(String bookTitle, /*User user*/ String numOfBooks) {
-        this.bookTitle = bookTitle;
-        //this.user = user;
-        this.numOfBooks = numOfBooks;
+    @ManyToOne
+    private ShoppingCart shoppingCart;
 
+    @Column(name = "total_price")
+    private double totalPrice;
+
+//    public BookOrder(String bookTitle, /*User user*/ String numOfBooks) {
+//        this.bookTitle = bookTitle;
+//        //this.user = user;
+//        this.numOfBooks = numOfBooks;
+//
+//    }
+    public BookOrder(List<OrderItem> orderItems, ShoppingCart shoppingCart, double totalPrice) {
+        this.orderItems = orderItems;
+        this.shoppingCart = shoppingCart;
+        this.totalPrice = totalPrice;
     }
 
     public BookOrder() {
