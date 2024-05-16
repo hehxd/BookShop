@@ -2,9 +2,6 @@ package bs.BookShop.Web;
 
 import bs.BookShop.Model.*;
 import bs.BookShop.Service.*;
-import bs.BookShop.Service.Impl.BookServiceImpl;
-import jakarta.servlet.http.HttpServletRequest;
-import org.hibernate.query.Order;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,16 +17,16 @@ public class BookController {
     private final BookService bookService;
     private final CategoryService categoryService;
     private final CityService cityService;
-    private final OrderService orderService;
+    private final ReviewService reviewService;
 
-    private final ShoppingCartService shoppingCartService;
+    private final UserService userService;
 
-    public BookController(BookService bookService, CategoryService categoryService, CityService cityService, OrderService orderService, ShoppingCartService shoppingCartService) {
+    public BookController(BookService bookService, CategoryService categoryService, CityService cityService, ReviewService reviewService, UserService userService) {
         this.bookService = bookService;
         this.categoryService = categoryService;
         this.cityService = cityService;
-        this.orderService = orderService;
-        this.shoppingCartService = shoppingCartService;
+        this.reviewService = reviewService;
+        this.userService = userService;
     }
 
     @GetMapping({"/","/books"})
@@ -98,77 +95,30 @@ public class BookController {
         return "redirect:/";
     }
 
-
     @GetMapping("/books/{id}")
     public String bookPage(@PathVariable Long id, Model model){
         Book book = bookService.findById(id);
+        List<Review> reviews = reviewService.getReviewsByBookId(id);
         model.addAttribute("book", book);
+        model.addAttribute("reviews", reviews);
 
         return "book-page";
     }
 
-    @GetMapping("/books/cart/add/{id}")
-    public String addToCart(@PathVariable Long id) {
-        Book book = bookService.findById(id);
-        shoppingCartService.addToCart(book);
-        return "redirect:/";
-    }
-
-    @GetMapping("/books/cart/remove/{id}")
-    public String removeFromCart(@PathVariable Long id) {
-        Book book = bookService.findById(id);
-        shoppingCartService.removeFromCart(book);
-        return "redirect:/";
-    }
+    int i = 10;
+    @PostMapping("/books/{id}/addReview")
+    public String addReview(//@RequestParam("user") User user,
+                            @PathVariable Long id,
+                            @RequestParam Integer reviewRating,
+                            @RequestParam String reviewDescription) {
 
 
-    @GetMapping("/books/cart")
-    public String viewCart(Model model) {
-        ShoppingCart cart = shoppingCartService.getShoppingCart();
-        model.addAttribute("cart", cart);
-        return "cart-view";
-    }
+        User user = userService.create("testFirsName"+(i+1),"testLastName"+(i+1),"testAddress"+(i+1));
 
-    @PostMapping("/books/cart/add/{id}")
-    public String addToCartPost(@PathVariable Long id) {
-        Book book = bookService.findById(id);
-        shoppingCartService.addToCart(book);
-        return "redirect:/";
-    }
 
-    @PostMapping("/books/cart/remove/{id}")
-    public String removeFromCartPost(@PathVariable Long id) {
-        Book book = bookService.findById(id);
-        shoppingCartService.removeFromCart(book);
-        return "redirect:/";
-    }
-    @PostMapping("/books/order/{id}")
-    public String submitOrder(@PathVariable Long id,  Model model){
-        Book book = bookService.findById(id);
-        model.addAttribute("book", book);
-
-        return "orderConfirmation";
-    }
-    @PostMapping("/books/order/confirmation/{id}")
-    public String confirmOrder(@PathVariable Long id, @RequestParam("numOfBooks") String numOfBooks,
-                               Model model){
-        Book book = bookService.findById(id);
-        BookOrder bookOrder = new BookOrder(book.getTitle(), numOfBooks);
-        orderService.submitOrder(bookOrder);
-        return "redirect:/";
-    }
-
-    @GetMapping("/books/orders")
-    public String viewOrders(Model model) {
-        List<BookOrder> bookOrders = orderService.listAll();
-        model.addAttribute("orders", bookOrders);
-        return "orderView";
-    }
-
-    @PostMapping("books/orders/{id}/updateStatus")
-    public String updateOrderStatus(@PathVariable Long id, @RequestParam OrderStatus status) {
-        orderService.updateOrderStatus(id, status);
-        return "redirect:/books/orders";
+        reviewService.create(user, id, reviewRating, reviewDescription);
+        i++;
+        return "redirect:/books/" + id;
     }
 
     @GetMapping("/checkout")

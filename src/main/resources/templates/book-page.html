@@ -34,42 +34,48 @@
                 <form th:action="@{'/books/cart/add/' + ${book.bookId}}" method="post">
                     <button type="submit" class="btn btn-primary">Add to Cart</button>
                 </form>
-                <!-- Reviews Section
+
+                <!-- Reviews Section -->
                 <div class="mt-5">
                     <h3>Reviews</h3>
                     <div class="card">
-                        <div class="card-body">
+                        <div class="card-body" id="reviewsContainer">
 
-                            <div class="mb-3">
-                                <h5 class="card-title">Reviewer Name</h5>
-                                <p class="card-text">Rating: <span>5 stars</span></p>
-                                <p class="card-text">Review: <span>This book is amazing!</span></p>
+                            <button type="button" id="toggleReviewForm" class="btn btn-primary mb-3">Add Review</button>
+
+
+                            <div th:each="review : ${reviews}">
+                                <div class="mb-3">
+                                    <h5 th:text="${review.user.firstName + ' ' + review.user.lastName}" class="card-title">Reviewer Name</h5>
+                                    <p class="card-text">Rating: <span th:text="${review.rating}"></span> stars</p>
+                                    <p class="card-text">Review: <span th:text="${review.reviewDescription}"></span></p>
+                                </div>
                             </div>
+                        </div>
+                    </div>
 
-                            <div class="mt-3">
+
+                    <div id="reviewForm" style="display: none;">
+                        <div class="card">
+                            <div class="card-body">
                                 <h5 class="card-title">Add Your Review</h5>
-                                <form>
+                                <form th:action="@{'/books/{id}/addReview' (id=${book.bookId})}" method="post">
+                                    <input type="hidden" name="bookId" th:value="${book.bookId}" />
                                     <div class="mb-3">
                                         <label for="reviewRating" class="form-label">Rating</label>
-                                        <select id="reviewRating" class="form-select">
-                                            <option selected>Choose...</option>
-                                            <option value="1">1 star</option>
-                                            <option value="2">2 stars</option>
-                                            <option value="3">3 stars</option>
-                                            <option value="4">4 stars</option>
-                                            <option value="5">5 stars</option>
-                                        </select>
+                                        <input id="reviewRating" name="reviewRating" type="number" min="1" max="10" class="form-control">
                                     </div>
                                     <div class="mb-3">
-                                        <label for="reviewText" class="form-label">Review</label>
-                                        <textarea class="form-control" id="reviewText" rows="3"></textarea>
+                                        <label for="reviewDescription" class="form-label">Review</label>
+                                        <textarea class="form-control" id="reviewDescription" name="reviewDescription" rows="3"></textarea>
                                     </div>
                                     <button type="submit" class="btn btn-primary">Submit</button>
                                 </form>
                             </div>
                         </div>
                     </div>
-                </div>-->
+                </div>
+
 
             </div>
         </div>
@@ -77,4 +83,14 @@
 </main>
 
 </body>
+<script>
+    document.getElementById('toggleReviewForm').addEventListener('click', function() {
+        let reviewForm = document.getElementById('reviewForm');
+        if (reviewForm.style.display === 'none' || reviewForm.style.display === '') {
+            reviewForm.style.display = 'block';
+        } else {
+            reviewForm.style.display = 'none';
+        }
+    });
+</script>
 </html>
