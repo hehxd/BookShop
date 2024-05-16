@@ -20,6 +20,12 @@
             <td th:text="${item.book.title}"></td>
             <td th:text="${item.book.price}"></td>
             <td th:text="${item.quantity}"></td>
+            <td>
+                <form th:action="@{'/books/cart/remove/' + ${item.book.bookId}}" method="post">
+                    <input type="hidden" name="itemId" th:value="${item.id}">
+                    <button type="submit">Remove</button>
+                </form>
+            </td>
         </tr>
         </tbody>
     </table>

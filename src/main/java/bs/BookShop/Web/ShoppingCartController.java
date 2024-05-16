@@ -56,7 +56,7 @@ public class ShoppingCartController {
     public String removeFromCartPost(@PathVariable Long id) {
         Book book = bookService.findById(id);
         shoppingCartService.removeFromCart(book);
-        return "redirect:/";
+        return "redirect:/books/cart";
     }
 
 }
