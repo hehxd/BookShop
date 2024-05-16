@@ -6,14 +6,27 @@
 </head>
 <body>
 <h1>Shopping Cart</h1>
-<ul>
-    <li th:each="book : ${cart.books}">
-        <span th:text="${book.title}"></span> - <span th:text="${book.price}"></span>
-        <form th:action="@{'/books/cart/remove/' + ${book.bookId}}" method="get">
-            <button type="submit">Remove</button>
-        </form>
-    </li>
-</ul>
+<div th:if="${not #lists.isEmpty(cart.cartItems)}">
+    <table>
+        <thead>
+        <tr>
+            <th>Title</th>
+            <th>Price</th>
+            <th>Quantity</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${cart.cartItems}">
+            <td th:text="${item.book.title}"></td>
+            <td th:text="${item.book.price}"></td>
+            <td th:text="${item.quantity}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div th:if="${#lists.isEmpty(cart.cartItems)}">
+    <p>The shopping cart is empty.</p>
+</div>
 <p>Total Price: <span th:text="${cart.totalPrice}"></span></p>
 <a href="/checkout" type="button" class="btn btn-secondary mt-4">Checkout</a>
 </body>

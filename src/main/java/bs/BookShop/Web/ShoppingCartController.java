@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class ShoppingCartController {
@@ -23,9 +24,9 @@ public class ShoppingCartController {
 
 
     @GetMapping("/books/cart/add/{id}")
-    public String addToCart(@PathVariable Long id) {
+    public String addToCart(@PathVariable Long id, @RequestParam Integer bookQuantity) {
         Book book = bookService.findById(id);
-        shoppingCartService.addToCart(book);
+        shoppingCartService.addToCart(book, bookQuantity);
         return "redirect:/";
     }
 
@@ -45,9 +46,9 @@ public class ShoppingCartController {
     }
 
     @PostMapping("/books/cart/add/{id}")
-    public String addToCartPost(@PathVariable Long id) {
+    public String addToCartPost(@PathVariable Long id,@RequestParam Integer bookQuantity) {
         Book book = bookService.findById(id);
-        shoppingCartService.addToCart(book);
+        shoppingCartService.addToCart(book, bookQuantity);
         return "redirect:/";
     }
 

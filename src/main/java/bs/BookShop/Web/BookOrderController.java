@@ -34,9 +34,10 @@ public class BookOrderController {
         return "orderConfirmation";
     }
     @PostMapping("/books/order/confirmation/{id}")
-    public String confirmOrder(@PathVariable Long id, Model model){
+    public String confirmOrder(@PathVariable Long id, @RequestParam("numOfBooks") String numOfBooks,
+                               Model model){
         Book book = bookService.findById(id);
-        BookOrder bookOrder = new BookOrder(book.getTitle());
+        BookOrder bookOrder = new BookOrder(book.getTitle(), numOfBooks);
         orderService.submitOrder(bookOrder);
         return "redirect:/";
     }

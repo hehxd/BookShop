@@ -14,17 +14,18 @@ public class ShoppingCart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "shoppingCartId")
-    private Long shoppingCartId;
+    @Column(name = "shopping_cart_id")
+    private Long id;
 
-    @OneToMany
-    private List<Book> books;
+    @OneToMany(mappedBy = "shoppingCart", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CartItem> cartItems = new ArrayList<>();
+
     @Basic
     @Column(name = "total_price")
     private double totalPrice;
 
-    public ShoppingCart(List<Book> books, double totalPrice) {
-        this.books = new ArrayList<>();
-        this.totalPrice = 0.0;
+    public ShoppingCart(List<CartItem> cartItems, double totalPrice) {
+        this.cartItems = cartItems;
+        this.totalPrice = totalPrice;
     }
 }
