@@ -21,17 +21,6 @@ import java.util.Optional;
 @Service
 public class BookServiceImpl implements BookService {
 
-    @NoArgsConstructor
-    @AllArgsConstructor
-    @Data
-    public static class BookSearchCriteria {
-        private Long categoryId;
-        private Integer price;
-        private Long cityId;
-        private String title;
-        private String author;
-    }
-
     private final BookRepository bookRepository;
     private final CategoryRepository categoryRepository;
     private final CityRepository cityRepository;
