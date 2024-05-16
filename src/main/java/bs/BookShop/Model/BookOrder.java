@@ -18,15 +18,15 @@ public class BookOrder {
     private OrderStatus status = OrderStatus.PROCESSING;
 
     @ManyToOne
-    //@JoinTable(
-      //      name = "user_book_orders",
-        //    joinColumns = @JoinColumn(name = "book_order_id"),
-          //  inverseJoinColumns = @JoinColumn(name = "user_id"))
     private User user;
 
-    public BookOrder(String bookTitle /*User user*/) {
+    private String numOfBooks;
+
+    public BookOrder(String bookTitle, /*User user*/ String numOfBooks) {
         this.bookTitle = bookTitle;
         //this.user = user;
+        this.numOfBooks = numOfBooks;
+
     }
 
     public BookOrder() {

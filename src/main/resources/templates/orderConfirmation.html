@@ -23,6 +23,7 @@
     <header>
         <h1>Book Order page - Order confirmation </h1>
     </header>
+    <form th:action="@{'/books/order/confirmation/' + ${book.bookId}}" method="post">
     <table>
         <tr>
             <th colspan="2">
@@ -47,15 +48,18 @@
         </tr>
         <tr>
             <td><b>How many books </b></td>
-            <td> </td>
+            <td><input type="text" th:name="numOfBooks" th:value="${numOfBooks}" /> </td>
         </tr>
     </table>
+
+
+        <button type="submit" class="btn btn-primary">Confirm</button>
+    </form>
+
     <a th:href="@{/books}">
         <i>Cancel</i>
     </a>
-    <form th:action="@{'/books/order/confirmation/' + ${book.bookId}}" method="post">
-        <button type="submit" class="btn btn-primary">Confirm</button>
-    </form>
+
 </section>
 </body>
 </html>

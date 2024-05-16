@@ -9,9 +9,10 @@
 <table border="1">
     <thead>
     <tr>
-        <th>ID</th>
+        <th>Order ID</th>
         <th>Book Title</th>
         <th>Address</th>
+        <th>How many books</th>
         <th>Status</th>
         <th>Actions</th>
     </tr>
@@ -21,13 +22,12 @@
         <td th:text="${order.id}">Order ID</td>
         <td th:text="${order.bookTitle}">Book Title</td>
         <td >[order.user.getAddress]</td>
+        <td th:text="${order.numOfBooks}"></td>
         <td th:text="${order.status}">Status</td>
         <td>
             <form th:action="@{'/books/orders/' + ${order.id} + '/updateStatus'}" method="post">
                 <select name="status">
-                    <!-- Тековно селектираната опција како disabled и selected -->
                     <option value="" disabled="disabled" selected="selected">Choose</option>
-                    <!-- Прикажи ги сите други опции освен селектираната -->
                     <option value="PROCESSING" th:if="${order.status} != 'PROCESSING'">Processing</option>
                     <option value="SHIPPED" th:if="${order.status} != 'SHIPPED'">Shipped</option>
                     <option value="DELIVERED" th:if="${order.status} != 'DELIVERED'">Delivered</option>
@@ -35,16 +35,6 @@
                 </select>
                 <button type="submit">Update Status</button>
             </form>
-            <!--<form th:action="@{'/books/orders/' + ${order.id} + '/updateStatus'}" method="post">
-                <select name="status">
-                    <option th:text="${order.status}"></option>
-                    <option value="PROCESSING">Processing</option>
-                    <option value="SHIPPED">Shipped</option>
-                    <option value="DELIVERED">Delivered</option>
-                    <option value="CANCELLED">Cancelled</option>
-                </select>
-                <button type="submit">Update Status</button>
-            </form> -->
         </td>
     </tr>
     </tbody>
