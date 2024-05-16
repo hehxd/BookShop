@@ -8,6 +8,11 @@ import bs.BookShop.Repository.BookRepository;
 import bs.BookShop.Repository.CategoryRepository;
 import bs.BookShop.Repository.CityRepository;
 import bs.BookShop.Service.BookService;
+import bs.BookShop.Specification.BookSpecification;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +20,17 @@ import java.util.Optional;
 
 @Service
 public class BookServiceImpl implements BookService {
+
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Data
+    public static class BookSearchCriteria {
+        private Long categoryId;
+        private Integer price;
+        private Long cityId;
+        private String title;
+        private String author;
+    }
 
     private final BookRepository bookRepository;
     private final CategoryRepository categoryRepository;
@@ -68,30 +84,35 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<Book> searchBooks(Long categoryId, Integer price, Long cityId) {
-        if (categoryId != null && price != null && cityId != null) {
-            Category category = this.categoryRepository.findByCategoryId(categoryId);
-            City city = this.cityRepository.findById(cityId).orElseThrow(InvalidCityIdException::new);
-            return bookRepository.findByCategoriesAndPriceEqualsAndBookCitiesContains(category, price, city);
-        } else if (categoryId != null && price != null) {
-            Category category = this.categoryRepository.findByCategoryId(categoryId);
-            return bookRepository.findByCategoriesAndPriceEquals(category, price);
-        } else if (categoryId != null && cityId != null) {
-            Category category = this.categoryRepository.findByCategoryId(categoryId);
-            City city = this.cityRepository.findById(cityId).orElseThrow(InvalidCityIdException::new);
-            return bookRepository.findByCategoriesAndBookCitiesContains(category, city);
-        } else if (price != null && cityId != null) {
-            City city = this.cityRepository.findById(cityId).orElseThrow(InvalidCityIdException::new);
-            return bookRepository.findByPriceEqualsAndBookCitiesContains(price, city);
-        } else if (categoryId != null) {
-            Category category = this.categoryRepository.findByCategoryId(categoryId);
-            return bookRepository.findByCategories(category);
-        } else if (price != null) {
-            return bookRepository.findBookByPriceEquals(price);
-        } else if (cityId != null) {
-            City city = this.cityRepository.findById(cityId).orElseThrow(InvalidCityIdException::new);
-            return bookRepository.findBookByBookCitiesContains(city);
+    public List<Book> searchBooks(Long categoryId, Integer price, Long cityId, String title, String author) {
+        Specification<Book> spec = Specification.where(null);
+
+        if (categoryId != null) {
+            spec = spec.and(BookSpecification.hasCategory(categoryId));
         }
-        return bookRepository.findAll();
+
+        if (price != null) {
+            spec = spec.and(BookSpecification.hasPrice(price));
+        }
+
+        if (cityId != null) {
+            spec = spec.and(BookSpecification.hasCity(cityId));
+        }
+
+        if (title != null) {
+            spec = spec.and(BookSpecification.hasTitle(title));
+        }
+
+        if (author != null) {
+            spec = spec.and(BookSpecification.hasAuthor(author));
+        }
+
+//        if (price != null) {  TODO: If we want to go up to price VS matching the exact price (method above)
+//            spec = spec.and(BookSpecification.priceUpTo(price));
+//        }
+
+        return bookRepository.findAll(spec);
     }
+
+
 }

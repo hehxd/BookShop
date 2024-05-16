@@ -2,6 +2,7 @@ package bs.BookShop.Web;
 
 import bs.BookShop.Model.*;
 import bs.BookShop.Service.*;
+import bs.BookShop.Service.Impl.BookServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import org.hibernate.query.Order;
 import org.springframework.stereotype.Controller;
@@ -34,12 +35,15 @@ public class BookController {
     @GetMapping({"/","/books"})
     public String showProduct(@RequestParam(required = false) Long categoryId,
                               @RequestParam(required = false) Integer price,
-                              @RequestParam(required = false) Long cityId, Model model) {
+                              @RequestParam(required = false) Long cityId,
+                              @RequestParam(required = false) String title,
+                              @RequestParam(required = false) String author,
+                              Model model) {
         List<Book> books=null;
-        if (categoryId == null && price==null && cityId==null) {
+        if (categoryId == null && price==null && cityId==null && title==null && author==null) {
             books = this.bookService.listBooks();
         } else {
-            books = this.bookService.searchBooks(categoryId, price, cityId);
+            books = this.bookService.searchBooks(categoryId, price, cityId, title, author) ;
         }
 
         model.addAttribute("books", books);
@@ -164,5 +168,11 @@ public class BookController {
     public String updateOrderStatus(@PathVariable Long id, @RequestParam OrderStatus status) {
         orderService.updateOrderStatus(id, status);
         return "redirect:/books/orders";
+    }
+
+    @GetMapping("/checkout")
+    public String viewCheckout() {
+
+        return "checkout";
     }
 }

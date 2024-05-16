@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Checkout</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300&display=swap">
+</head>
+<body style="font-family: 'Poppins', sans-serif;">
+<div class="container-fluid">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-6">
+            <form class="bg-light p-4 rounded">
+                <div class="text-center mb-4">
+                    <h2>Payment</h2>
+                </div>
+                <hr class="my-4">
+                <div class="form-group">
+                    <label for="cardHolderName">Card holder name</label>
+                    <input type="text" class="form-control" id="cardHolderName" placeholder="Enter your full name">
+                </div>
+                <div class="form-group">
+                    <label for="cardNumber">Card Number</label>
+                    <input type="number" class="form-control" id="cardNumber" placeholder="0000 0000 0000 0000">
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-8">
+                        <label for="expiryDate">Expiry Date</label>
+                        <input type="text" class="form-control" id="expiryDate" placeholder="01/23">
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="cvv">CVV</label>
+                        <input type="number" class="form-control" id="cvv" placeholder="CVV">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Checkout</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -19,7 +19,9 @@
                     th:value="${c.getCategoryId()}"
                     th:text="${c.getName()}"> [category]</option>
         </select>
-        <span>Price: <input type="text" id="price" name="price"></span>
+    <span>Price: <input type="text" id="price" name="price"></span>
+    <span>Title: <input type="text" id="title" name="title"></span>
+    <span>Author: <input type="text" id="author" name="author"></span>
     <label for="f3">City</label>
     <select id="f3" name="cityId">
         <option value="">All</option>
@@ -61,8 +63,8 @@
 
 
                     <form th:action="@{'/books/cart/add/' + ${book.bookId}}" method="post">
-                        <button type="submit" class="btn btn-primary">Add to Cart</button>
-                    </form>
+                    <button type="submit" class="btn btn-primary">Add to Cart</button>
+                </form>
 
                     <form th:action="@{'/books/order/' + ${book.bookId}}" method="post">
                         <button type="submit" class="btn btn-primary">Order now</button>
