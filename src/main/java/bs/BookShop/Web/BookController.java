@@ -109,4 +109,16 @@ public class BookController {
 
         return "checkout";
     }
+
+    @GetMapping("/categories")
+    public List<Category> getCategories()
+    {
+        return this.categoryService.listCategories();
+    }
+
+    @GetMapping("/cities")
+    public List<City> getCities()
+    {
+        return this.cityService.listAll();
+    }
 }

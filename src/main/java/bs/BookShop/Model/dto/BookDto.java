@@ -27,13 +27,15 @@ public class BookDto {
 
     private List<Long>bookCities;
 
+    private String bookCover;
 
-    public BookDto(String title, String author, String description, Integer price, List<Long> categories, List<Long> bookCities) {
+    public BookDto(String title, String author, String description, Integer price, List<Long> categories, List<Long> bookCities,String bookCover) {
         this.title = title;
         this.author = author;
         this.description = description;
         this.price = price;
         this.categories = categories;
         this.bookCities = bookCities;
+        this.bookCover= bookCover;
     }
 }

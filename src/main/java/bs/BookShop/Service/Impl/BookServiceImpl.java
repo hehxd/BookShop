@@ -42,7 +42,7 @@ public class BookServiceImpl implements BookService {
     public Optional<Book> create(BookDto bookDto) {
         List<Category> categoryList = this.categoryRepository.findAllById(bookDto.getCategories());
         List<City> cityList = this.cityRepository.findAllById(bookDto.getBookCities());
-        Book book = new Book(bookDto.getTitle(), bookDto.getAuthor(), bookDto.getDescription(), bookDto.getPrice(), categoryList, cityList);
+        Book book = new Book(bookDto.getTitle(), bookDto.getAuthor(), bookDto.getDescription(), bookDto.getPrice(), categoryList, cityList, bookDto.getBookCover());
         return Optional.of(this.bookRepository.save(book));
     }
 
@@ -56,6 +56,7 @@ public class BookServiceImpl implements BookService {
         book.setPrice(bookDto.getPrice());
         book.setCategories(categoryList);
         book.setBookCities(cityList);
+        book.setBookCover(bookDto.getBookCover());
         return Optional.of(this.bookRepository.save(book));
     }
 

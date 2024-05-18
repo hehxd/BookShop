@@ -48,20 +48,23 @@ public class Book {
     )
     private List<City>bookCities;
 
-    public Book(String title, String author, String description, List<Category> categories) {
+    private String bookCover;
+
+    public Book(String title, String author, String description, List<Category> categories,String bookCover) {
         this.title = title;
         this.author = author;
         this.description = description;
         this.categories = categories;
+        this.bookCover  = bookCover;
     }
 
     public Book(String title, String author, String description, Integer price, List<Category> categories,
-                List<City> bookCities) {
+                List<City> bookCities,String bookCover) {
         this.title = title;
         this.author = author;
         this.description = description;
         this.price = price;
         this.categories = categories;
         this.bookCities = bookCities;
-    }
+        this.bookCover  = bookCover; }
 }
