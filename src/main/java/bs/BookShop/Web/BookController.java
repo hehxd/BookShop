@@ -77,11 +77,8 @@ public class BookController {
     }
 
     @PostMapping("/delete/{id}")
-    public ResponseEntity<Object> delete(@PathVariable Long id) {
+    public void delete(@PathVariable Long id) {
         this.bookService.delete(id);
-        if(this.bookService.findById(id).isPresent())
-            return ResponseEntity.badRequest().build();
-        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/{id}")
