@@ -1,17 +1,16 @@
 package bs.BookShop.Service;
 
 import bs.BookShop.Model.Book;
-import bs.BookShop.Model.Category;
-import org.springframework.data.jpa.domain.Specification;
+import bs.BookShop.Model.dto.BookDto;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface BookService {
     List<Book> listBooks();
-    Book findById(Long id);
-    Book create(String title, String author, String description, Integer price, List<Long> categories, List<Long>cities);
-    Book update(Long id, String title, String author, String description, Integer price,
-                List<Long> categories, List<Long>cities);
+    Optional<Book> findById(Long id);
+    Optional<Book> create(BookDto bookDto);
+    Optional<Book> update(Long id, BookDto bookDto);
     Book delete(Long id);
     List<Book> searchBooks(Long categoryId, Integer price, Long cityId, String title, String author);
 }

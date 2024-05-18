@@ -3,15 +3,12 @@ package bs.BookShop.Service.Impl;
 import bs.BookShop.Model.Book;
 import bs.BookShop.Model.Category;
 import bs.BookShop.Model.City;
-import bs.BookShop.Model.exceptions.InvalidCityIdException;
+import bs.BookShop.Model.dto.BookDto;
 import bs.BookShop.Repository.BookRepository;
 import bs.BookShop.Repository.CategoryRepository;
 import bs.BookShop.Repository.CityRepository;
 import bs.BookShop.Service.BookService;
 import bs.BookShop.Specification.BookSpecification;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -37,32 +34,29 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book findById(Long id) {
-        return this.bookRepository.findByBookId(id);
+    public Optional<Book> findById(Long id) {
+        return Optional.of(this.bookRepository.findByBookId(id));
     }
 
     @Override
-    public Book create(String title, String author, String description, Integer price,
-                       List<Long> categories, List<Long> cities) {
-        List<Category> categoryList = this.categoryRepository.findAllById(categories);
-        List<City> cityList = this.cityRepository.findAllById(cities);
-        Book book = new Book(title, author, description, price, categoryList, cityList);
-        return this.bookRepository.save(book);
+    public Optional<Book> create(BookDto bookDto) {
+        List<Category> categoryList = this.categoryRepository.findAllById(bookDto.getCategories());
+        List<City> cityList = this.cityRepository.findAllById(bookDto.getBookCities());
+        Book book = new Book(bookDto.getTitle(), bookDto.getAuthor(), bookDto.getDescription(), bookDto.getPrice(), categoryList, cityList);
+        return Optional.of(this.bookRepository.save(book));
     }
 
-    @Override
-    public Book update(Long id, String title, String author, String description,
-                       Integer price, List<Long> categories, List<Long> cities) {
+    public Optional<Book> update(Long id, BookDto bookDto) {
         Book book = this.bookRepository.findByBookId(id);
-        List<Category> categoryList = this.categoryRepository.findAllById(categories);
-        List<City> cityList = this.cityRepository.findAllById(cities);
-        book.setTitle(title);
-        book.setAuthor(author);
-        book.setDescription(description);
-        book.setPrice(price);
+        List<Category> categoryList = this.categoryRepository.findAllById(bookDto.getCategories());
+        List<City> cityList = this.cityRepository.findAllById(bookDto.getBookCities());
+        book.setTitle(bookDto.getTitle());
+        book.setAuthor(bookDto.getAuthor());
+        book.setDescription(bookDto.getDescription());
+        book.setPrice(bookDto.getPrice());
         book.setCategories(categoryList);
         book.setBookCities(cityList);
-        return this.bookRepository.save(book);
+        return Optional.of(this.bookRepository.save(book));
     }
 
     @Override

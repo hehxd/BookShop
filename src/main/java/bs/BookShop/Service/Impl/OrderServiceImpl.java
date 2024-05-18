@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -18,7 +19,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public BookOrder placeOrder(ShoppingCart shoppingCart) {
+    public Optional<BookOrder> placeOrder(ShoppingCart shoppingCart) {
         BookOrder order = new BookOrder();
         order.setShoppingCart(shoppingCart);
         order.setTotalPrice(shoppingCart.getTotalPrice());
@@ -33,12 +34,12 @@ public class OrderServiceImpl implements OrderService {
         }
         order.setOrderItems(orderItems);
 
-        return orderRepository.save(order);
+        return Optional.of(orderRepository.save(order));
     }
 
     @Override
-    public BookOrder findById(Long id) {
-        return orderRepository.findById(id).get();
+    public Optional<BookOrder> findById(Long id) {
+        return orderRepository.findById(id);
     }
 
     @Override

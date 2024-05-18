@@ -3,7 +3,9 @@ package bs.BookShop.Service.Impl;
 import bs.BookShop.Model.Book;
 import bs.BookShop.Model.CartItem;
 import bs.BookShop.Model.ShoppingCart;
+import bs.BookShop.Model.dto.CartItemDto;
 import bs.BookShop.Repository.ShoppingCartRepository;
+import bs.BookShop.Service.BookService;
 import bs.BookShop.Service.ShoppingCartService;
 import org.springframework.stereotype.Service;
 
@@ -11,22 +13,25 @@ import org.springframework.stereotype.Service;
 public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     private final ShoppingCartRepository shoppingCartRepository;
+    private final BookService bookService;
 
-    public ShoppingCartServiceImpl(ShoppingCartRepository shoppingCartRepository) {
+    public ShoppingCartServiceImpl(ShoppingCartRepository shoppingCartRepository, BookService bookService) {
         this.shoppingCartRepository = shoppingCartRepository;
+        this.bookService = bookService;
     }
 
     @Override
-    public void addToCart(Book book, Integer quantity) {
+    public void addToCart(CartItemDto cartItemDto) {
+        Book book = this.bookService.findById(cartItemDto.getBook()).get();
         ShoppingCart shoppingCart = getOrCreateShoppingCart();
         CartItem existingCartItem = findCartItemInCart(shoppingCart, book);
 
         if (existingCartItem != null) {
-            existingCartItem.setQuantity(existingCartItem.getQuantity() + quantity);
+            existingCartItem.setQuantity(existingCartItem.getQuantity() + cartItemDto.getQuantity());
         } else {
             CartItem newCartItem = new CartItem();
             newCartItem.setBook(book);
-            newCartItem.setQuantity(quantity);
+            newCartItem.setQuantity(cartItemDto.getQuantity());
             newCartItem.setShoppingCart(shoppingCart);
             shoppingCart.getCartItems().add(newCartItem);
         }

@@ -1,19 +1,17 @@
 package bs.BookShop.Web;
 
 import bs.BookShop.Model.*;
-import bs.BookShop.Service.BookService;
 import bs.BookShop.Service.OrderService;
 import bs.BookShop.Service.ShoppingCartService;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
+@CrossOrigin(origins = {"http://localhost:3000","*"})
+@RequestMapping("/api/bookorder")
 public class BookOrderController {
 
     private final OrderService orderService;
@@ -24,26 +22,21 @@ public class BookOrderController {
         this.shoppingCartService = shoppingCartService;
     }
 
-    @PostMapping("/books/order/confirmation")
-    public String confirmOrder(Model model) {
+    @PostMapping("/confirmation")
+    public ResponseEntity<BookOrder> confirmOrder() {
         ShoppingCart cart = shoppingCartService.getShoppingCart();
-        BookOrder order = orderService.placeOrder(cart);
-        model.addAttribute("order", order);
+        return this.orderService.placeOrder(cart).map(order -> ResponseEntity.ok().body(order))
+                .orElseGet(() -> ResponseEntity.badRequest().build());
 
-        shoppingCartService.clearCart();
-        return "redirect:/books/orders";
     }
 
-    @GetMapping("/books/orders")
-    public String viewOrders(Model model) {
-        List<BookOrder> bookOrders = orderService.listAll();
-        model.addAttribute("orders", bookOrders);
-        return "orderView";
+    @GetMapping()
+    public List<BookOrder> viewOrders() {
+       return orderService.listAll();
     }
 
-    @PostMapping("books/orders/{id}/updateStatus")
-    public String updateOrderStatus(@PathVariable Long id, @RequestParam OrderStatus status) {
+    @PostMapping("/{id}/updateStatus")
+    public void updateOrderStatus(@PathVariable Long id, @RequestParam OrderStatus status) {
         orderService.updateOrderStatus(id, status);
-        return "redirect:/books/orders";
     }
 }

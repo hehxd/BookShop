@@ -1,12 +1,14 @@
 package bs.BookShop.Service.Impl;
 
 import bs.BookShop.Model.User;
+import bs.BookShop.Model.dto.UserDto;
 import bs.BookShop.Model.exceptions.UserNotFoundException;
 import bs.BookShop.Repository.UserRepository;
 import bs.BookShop.Service.UserService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -28,18 +30,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User create(String firstName, String lastName, String address) {
-        User user = new User(firstName, lastName, address);
-        return this.userRepository.save(user);
+    public Optional<User> create(UserDto userDto) {
+        User user = new User(userDto.getFirstName(), userDto.getLastName(), userDto.getAddress());
+        return Optional.of(this.userRepository.save(user));
     }
 
     @Override
-    public User update(Long userId, String firstName, String lastName, String address) {
+    public Optional<User> update(Long userId, UserDto userDto) {
         User user = this.userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-        user.setAddress(address);
-        return this.userRepository.save(user);
+        user.setFirstName(userDto.getFirstName());
+        user.setLastName(userDto.getLastName());
+        user.setAddress(userDto.getAddress());
+        return Optional.of(this.userRepository.save(user));
     }
 
     @Override

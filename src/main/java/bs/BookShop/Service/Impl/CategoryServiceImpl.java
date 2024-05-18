@@ -1,12 +1,13 @@
 package bs.BookShop.Service.Impl;
 
-import bs.BookShop.Model.Book;
 import bs.BookShop.Model.Category;
+import bs.BookShop.Model.dto.CategoryDto;
 import bs.BookShop.Repository.CategoryRepository;
 import bs.BookShop.Service.CategoryService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -27,17 +28,15 @@ public class CategoryServiceImpl implements CategoryService {
         return this.categoryRepository.findByCategoryId(id);
     }
 
-    @Override
-    public Category create(String name) {
-        Category category = new Category(name);
-        return this.categoryRepository.save(category);
+    public Optional<Category> create(CategoryDto categoryDto) {
+        Category category = new Category(categoryDto.getName());
+        return Optional.of(this.categoryRepository.save(category));
     }
 
-    @Override
-    public Category update(Long id, String name) {
+    public Optional<Category> update(Long id, CategoryDto categoryDto) {
         Category category = this.categoryRepository.findByCategoryId(id);
-        category.setName(name);
-        return this.categoryRepository.save(category);
+        category.setName(categoryDto.getName());
+        return Optional.of(this.categoryRepository.save(category));
     }
 
     @Override
