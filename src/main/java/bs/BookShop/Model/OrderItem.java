@@ -1,5 +1,6 @@
 package bs.BookShop.Model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,6 +18,7 @@ public class OrderItem {
     private Book book;
 
     @ManyToOne
+    @JsonBackReference
     private BookOrder bookOrder;
 
     private int quantity;
