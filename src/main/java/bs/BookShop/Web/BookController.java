@@ -88,7 +88,7 @@ public class BookController {
     }
 
     int i = 10;
-    @PostMapping("/{id}/addReview")
+    @PostMapping("/addReview")
     public ResponseEntity<Review> addReview(@RequestBody ReviewDto reviewDto) {
 
         //For test purposes
@@ -117,5 +117,11 @@ public class BookController {
     public List<City> getCities()
     {
         return this.cityService.listAll();
+    }
+
+    @GetMapping("/reviewsByBook")
+    public List<Review> getReviewsByBook(@RequestParam Long bookId)
+    {
+        return this.reviewService.getReviewsByBookId(bookId);
     }
 }
